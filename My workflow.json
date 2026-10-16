@@ -1,0 +1,293 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 6
+            },
+            {},
+            {}
+          ]
+        }
+      },
+      "id": "0dc50971-8738-4c68-9f3c-5939220759f5",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -304,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "Create a productive plan for today. Suggest my top 3 priorities, a realistic schedule, and one action I should start immediately.",
+        "options": {}
+      },
+      "id": "add9f2d1-e3c8-4495-b48f-b9b3f1170408",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -80,
+        -64
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "id": "40f3b6aa-3352-43c7-b986-52da336c8189",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -560,
+        192
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": null,
+          "name": "",
+          "__aiGatewayManaged": true
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "15c19e6f-e7a8-4180-b950-abf202f1ca5b",
+      "name": "When chat message received",
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        -432,
+        -224
+      ],
+      "webhookId": "909fd247-4e06-42bd-bd0b-26cb5ccee0e8"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "{{'personal_productivity_assistant'}}"
+      },
+      "id": "3bb3e691-3a89-48d5-92c0-8ae33cf26700",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        -368,
+        208
+      ]
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "mode": "list",
+          "value": "amitnishad729@gmail.com"
+        },
+        "additionalFields": {}
+      },
+      "id": "51958b29-0284-436c-874a-ec634ee43c20",
+      "name": "Create an event in Google Calendar",
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        -208,
+        192
+      ],
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "Y9KqTjVNq7ulRTQi",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "cityName": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('City', ``, 'string') }}"
+      },
+      "id": "941d4daa-16bf-41d8-94a6-8353632ef704",
+      "name": "OpenWeatherMap",
+      "type": "n8n-nodes-base.openWeatherMapTool",
+      "typeVersion": 1,
+      "position": [
+        352,
+        192
+      ],
+      "credentials": {
+        "openWeatherMapApi": {
+          "id": "UBX1mFumVxIFyr10",
+          "name": "OpenWeatherMap account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1_yxC8-CR6yh6pDIPRLZW9HD5CzGzT2RsYx8agKB-1C0",
+          "mode": "list",
+          "cachedResultName": "Deep Learning Groups",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_yxC8-CR6yh6pDIPRLZW9HD5CzGzT2RsYx8agKB-1C0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_yxC8-CR6yh6pDIPRLZW9HD5CzGzT2RsYx8agKB-1C0/edit#gid=0"
+        },
+        "options": {}
+      },
+      "id": "a5e46c7e-3a47-4ed7-80ee-452d5fc21579",
+      "name": "Get row(s) in sheet in Google Sheets",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        -48,
+        192
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "5fTNvpaZldXuOp0h",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "amitnishad729@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "id": "e860e60b-7394-49d9-949c-d1b0ca439adf",
+      "name": "Send a message in Gmail",
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        192
+      ],
+      "webhookId": "08bd8997-2465-4840-a724-de3bcc2ed124",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "u2FD6wSciWIc7pJD",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create an event in Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet in Google Sheets": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a message in Gmail": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d9defa04-4f0f-4674-b2ca-f9da9ecdd55f",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "3ab659716ad027ee81dec0a11ff2f936b9ed1e30d08bc9a7e3b5a8bce5d0d149"
+  },
+  "nodeGroups": [],
+  "id": "YjQf3QCjEIkuuapc",
+  "tags": []
+}
